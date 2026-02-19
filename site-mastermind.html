@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mastermind Gratuita – Liderar Humanos de Maneira Humana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital, wght@0, 300;0, 400;0, 600;0, 700;1, 300;1, 400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F2F6F8;
+    --dark: #0F1E24;
+    --warm-brown: #1E3D4A;
+    --gold: #386d7b;
+    --gold-light: #4d8fa0;
+    --terracotta: #2a5a6b;
+    --sage: #5a8a96;
+    --text: #1A2F38;
+    --muted: #4A6A75;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml, %3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    background: var(--dark);
+    padding: 80px 60px 80px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    background: var(--dark);
+    clip-path: polygon(0 0, 0 100%, 100% 50%);
+    z-index: 3;
+  }
+
+  .hero-right {
+    background: var(--warm-brown);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(56, 109, 123, 0.2) 0%, transparent 70%);
+  }
+
+  .hero-ornament {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    height: 420px;
+    border: 1px solid rgba(56, 109, 123, 0.3);
+    border-radius: 50%;
+    animation: breathe 6s ease-in-out infinite;
+  }
+  .hero-ornament::before {
+    content: '';
+    position: absolute;
+    inset: 30px;
+    border: 1px solid rgba(56, 109, 123, 0.2);
+    border-radius: 50%;
+  }
+  .hero-ornament::after {
+    content: '';
+    position: absolute;
+    inset: 60px;
+    border: 1px solid rgba(56, 109, 123, 0.12);
+    border-radius: 50%;
+  }
+
+  @keyframes breathe {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+    50% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+  }
+
+  .hero-quote {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 40px;
+  }
+
+  .hero-quote blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: rgba(245, 240, 232, 0.8);
+    line-height: 1.7;
+    max-width: 320px;
+  }
+
+  .hero-quote cite {
+    display: block;
+    margin-top: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(56, 109, 123, 0.12);
+    border: 1px solid rgba(56, 109, 123, 0.35);
+    color: var(--gold-light);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 2px;
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 4vw, 3.8rem);
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 24px;
+    animation: fadeUp 0.8s 0.15s ease both;
+  }
+
+  .hero-title em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .hero-subtitle {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: rgba(245, 240, 232, 0.7);
+    line-height: 1.75;
+    margin-bottom: 40px;
+    max-width: 460px;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .hero-subtitle strong {
+    color: var(--cream);
+    font-weight: 500;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--gold);
+    color: var(--dark);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 18px 36px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    animation: fadeUp 0.8s 0.45s ease both;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold-light);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .cta-btn:hover::before { transform: translateX(0); }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(56, 109, 123, 0.35); }
+
+  .cta-btn span { position: relative; z-index: 1; }
+  .cta-btn .arrow { position: relative; z-index: 1; font-size: 1rem; transition: transform 0.3s; }
+  .cta-btn:hover .arrow { transform: translateX(4px); }
+
+  .cta-note {
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: rgba(245, 240, 232, 0.4);
+    letter-spacing: 0.05em;
+    animation: fadeUp 0.8s 0.55s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+
+
+  /* ── SECTION BASE ── */
+  section { position: relative; }
+
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--dark);
+  }
+
+  .section-title em { color: var(--terracotta); font-style: italic; }
+
+  /* ── PAIN SECTION ── */
+  .pain {
+    background: var(--dark);
+    padding: 100px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pain::before {
+    content: '"';
+    position: absolute;
+    top: -40px;
+    left: 40px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30rem;
+    color: rgba(255, 255, 255, 0.025);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .pain-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .pain-intro .section-label { color: var(--gold-light); }
+  .pain-intro .section-label::before { background: var(--gold-light); }
+
+  .pain-intro .section-title { color: var(--cream); }
+  .pain-intro .section-title em { color: var(--gold-light); }
+
+  .pain-intro p {
+    margin-top: 24px;
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: rgba(245, 240, 232, 0.65);
+    line-height: 1.8;
+  }
+
+  .pain-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 10px;
+  }
+
+  .pain-item {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    padding: 22px 24px;
+    background: rgba(255, 255, 255, 0.04);
+    border-left: 3px solid rgba(56, 109, 123, 0.4);
+    transition: all 0.3s ease;
+  }
+
+  .pain-item:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-left-color: var(--gold);
+    transform: translateX(4px);
+  }
+
+  .pain-icon {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--gold-light);
+    margin-top: 2px;
+    flex-shrink: 0;
+    line-height: 1.6;
+  }
+
+  .pain-text {
+    font-size: 0.95rem;
+    color: rgba(245, 240, 232, 0.75);
+    line-height: 1.65;
+  }
+
+  .pain-text strong { color: var(--cream); font-weight: 500; }
+
+  /* ── LEARN SECTION ── */
+  .learn {
+    padding: 100px 80px;
+    background: var(--cream);
+    position: relative;
+  }
+
+  .learn-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .learn-header {
+    text-align: center;
+    margin-bottom: 70px;
+  }
+
+  .learn-header .section-label { justify-content: center; }
+  .learn-header .section-label::before { display: none; }
+
+  .learn-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: rgba(61, 43, 31, 0.08);
+  }
+
+  .learn-card {
+    background: var(--cream);
+    padding: 44px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .learn-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .learn-card:hover { background: var(--dark); }
+  .learn-card:hover .learn-card-num { color: rgba(201, 168, 76, 0.2); }
+  .learn-card:hover .learn-card-title { color: var(--cream); }
+  .learn-card:hover .learn-card-desc { color: rgba(245, 240, 232, 0.6); }
+  .learn-card:hover::before { transform: scaleX(1); }
+
+  .learn-card-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    font-weight: 700;
+    color: rgba(61, 43, 31, 0.07);
+    line-height: 1;
+    transition: color 0.4s;
+    margin-bottom: -16px;
+  }
+
+  .learn-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 14px;
+    transition: color 0.4s;
+  }
+
+  .learn-card-desc {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.75;
+    transition: color 0.4s;
+  }
+
+  /* ── FOR WHOM ── */
+  .forwhom {
+    background: var(--warm-brown);
+    padding: 100px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .forwhom::after {
+    content: 'VOCÊ';
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.03);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .forwhom-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .forwhom-text .section-label { color: var(--gold-light); }
+  .forwhom-text .section-label::before { background: var(--gold-light); }
+  .forwhom-text .section-title { color: var(--cream); }
+
+  .forwhom-text p {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: rgba(245, 240, 232, 0.65);
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  .forwhom-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .forwhom-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 24px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.3s;
+    cursor: default;
+  }
+
+  .forwhom-item:hover {
+    background: rgba(201, 168, 76, 0.1);
+    border-color: rgba(201, 168, 76, 0.25);
+    transform: translateX(6px);
+  }
+
+  .forwhom-check {
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    color: var(--gold);
+  }
+
+  .forwhom-item-text {
+    font-size: 0.95rem;
+    color: var(--cream);
+    line-height: 1.5;
+  }
+
+  .forwhom-item-text span {
+    display: block;
+    font-size: 0.8rem;
+    color: rgba(245, 240, 232, 0.45);
+    margin-top: 3px;
+  }
+
+  /* ── MENTORS ── */
+  .mentors {
+    background: var(--cream);
+    padding: 100px 80px;
+  }
+
+  .mentors-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .mentors-header {
+    text-align: center;
+    margin-bottom: 70px;
+  }
+
+  .mentors-header .section-label { justify-content: center; }
+  .mentors-header .section-label::before { display: none; }
+
+  .mentors-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .mentor-card {
+    padding: 50px 44px;
+    background: var(--dark);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mentor-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #386d7b, #4d8fa0);
+  }
+
+  .mentor-initial {
+    width: 72px;
+    height: 72px;
+    background: rgba(56, 109, 123, 0.15);
+    border: 1.5px solid rgba(56, 109, 123, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .mentor-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+
+  .mentor-role {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .mentor-bio {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: rgba(245, 240, 232, 0.65);
+    line-height: 1.8;
+  }
+
+  .mentor-pillars {
+    margin-top: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pillar-tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 5px 12px;
+  }
+
+  /* ── METHOD STRIP ── */
+  .method-strip {
+    background: #386d7b;
+    padding: 50px 80px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .method-strip-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .method-label-big {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .method-label-big small {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(242, 246, 248, 0.6);
+    margin-bottom: 4px;
+  }
+
+  .method-pillars {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .mpillar {
+    flex: 1;
+    min-width: 140px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 18px 16px;
+    text-align: center;
+  }
+
+  .mpillar-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1;
+  }
+
+  .mpillar-name {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(242, 246, 248, 0.7);
+    margin-top: 6px;
+  }
+
+  /* ── FINAL CTA ── */
+  .final-cta {
+    background: var(--dark);
+    padding: 120px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .final-cta::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(56, 109, 123, 0.1) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .final-cta-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .final-cta .section-label { justify-content: center; color: var(--gold); }
+  .final-cta .section-label::before { display: none; }
+
+  .final-cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4.5vw, 4rem);
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.1;
+    margin: 20px 0 24px;
+  }
+
+  .final-cta-title em { color: var(--gold); font-style: italic; }
+
+  .final-cta-sub {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: rgba(245, 240, 232, 0.6);
+    line-height: 1.8;
+    margin-bottom: 48px;
+  }
+
+  .final-cta .cta-btn {
+    font-size: 0.9rem;
+    padding: 20px 48px;
+    animation: none;
+  }
+
+  .final-cta .cta-note {
+    animation: none;
+    margin-top: 20px;
+  }
+
+  .social-proof {
+    margin-top: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .proof-item {
+    text-align: center;
+  }
+
+  .proof-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .proof-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.35);
+    margin-top: 6px;
+  }
+
+  .proof-divider {
+    width: 1px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #0F0D0A;
+    padding: 40px 80px;
+    text-align: center;
+    font-size: 0.78rem;
+    color: rgba(245, 240, 232, 0.25);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 80px 32px; }
+    .hero-left::after { display: none; }
+    .hero-right { display: none; }
+    .pain, .learn, .forwhom, .mentors, .final-cta { padding: 70px 32px; }
+    .pain-grid, .forwhom-inner, .mentors-grid { grid-template-columns: 1fr; gap: 40px; }
+    .learn-grid { grid-template-columns: 1fr; }
+    .method-strip { padding: 40px 32px; }
+    .method-strip-inner { grid-template-columns: 1fr; gap: 30px; }
+    footer { padding: 30px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════
+     HERO
+════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="badge">
+      <span>Mastermind 100% Gratuita</span>
+    </div>
+
+    <h1 class="hero-title">
+      Você lidera pessoas.<br>
+      Mas quem está te <em>ensinando</em><br>
+      a fazer isso?
+    </h1>
+
+    <p class="hero-subtitle">
+      Em uma live exclusiva, revelamos o método que transforma líderes comuns em líderes que <strong>geram resultado sem abrir mão das pessoas.</strong>
+    </p>
+
+    <a href="https://forms.gle/QYrWNRUVFvGpa71p6" target="_blank" rel="noopener" class="cta-btn">
+      <span>Garantir minha vaga gratuita</span>
+      <span class="arrow">→</span>
+    </a>
+
+    <p class="cta-note">Vagas limitadas · Sem custo · 100% online</p>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-ornament"></div>
+    <div class="hero-quote">
+      <blockquote>
+        "Liderar humanos de maneira humana não é fraqueza, é a habilidade mais rara e mais poderosa que existe."
+      </blockquote>
+      <cite>— Dani & Bia</cite>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ═══════════════════════════════
+     DOR
+════════════════════════════════ -->
+<section class="pain">
+  <div class="pain-grid">
+    <div class="pain-intro reveal">
+      <div class="section-label">Isso ressoa com você?</div>
+      <h2 class="section-title">A solidão de quem<br><em>lidera sozinho</em></h2>
+      <p>
+        Ninguém te ensina a ser líder. Um dia você era especialista, no outro, era responsável por pessoas. E aí começa a batalha silenciosa que poucos têm coragem de admitir.
+      </p>
+    </div>
+
+    <div class="pain-list reveal">
+      <div class="pain-item">
+        <div class="pain-icon">—</div>
+        <div class="pain-text"><strong>Você apaga incêndio o dia inteiro</strong> e sente que não avança, só sobrevive.</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-icon">—</div>
+        <div class="pain-text"><strong>Sua equipe não performa</strong> como você esperava, e você não sabe o que está errado.</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-icon">—</div>
+        <div class="pain-text"><strong>Dar feedback é um pesadelo.</strong> Você ou é duro demais ou evita o conflito, nunca no ponto certo.</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-icon">—</div>
+        <div class="pain-text"><strong>Sente que não é respeitado</strong> como líder, e não sabe como mudar isso sem ser agressivo.</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-icon">—</div>
+        <div class="pain-text"><strong>Escalar resultados parece impossível</strong> porque tudo depende de você para funcionar.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     O QUE VÃO APRENDER
+════════════════════════════════ -->
+<section class="learn">
+  <div class="learn-inner">
+    <div class="learn-header reveal">
+      <div class="section-label">O que você vai aprender</div>
+      <h2 class="section-title">Uma live. <em>Seis transformações.</em></h2>
+    </div>
+
+    <div class="learn-grid">
+      <div class="learn-card reveal">
+        <div class="learn-card-num">01</div>
+        <h3 class="learn-card-title">Liderança começa dentro de você</h3>
+        <p class="learn-card-desc">Como sair do papel técnico e assumir a identidade de líder, sem perder quem você é.</p>
+      </div>
+      <div class="learn-card reveal">
+        <div class="learn-card-num">02</div>
+        <h3 class="learn-card-title">Autoridade sem imposição</h3>
+        <p class="learn-card-desc">Como construir respeito genuíno e influência real dentro da sua equipe, com consistência.</p>
+      </div>
+      <div class="learn-card reveal">
+        <div class="learn-card-num">03</div>
+        <h3 class="learn-card-title">Comunicação e feedback poderosos</h3>
+        <p class="learn-card-desc">Roteiros práticos para conversas difíceis que fortalecem relações em vez de quebrá-las.</p>
+      </div>
+      <div class="learn-card reveal">
+        <div class="learn-card-num">04</div>
+        <h3 class="learn-card-title">Time que performa sem você</h3>
+        <p class="learn-card-desc">Como delegar de verdade e construir uma equipe que entrega mesmo quando você não está presente.</p>
+      </div>
+      <div class="learn-card reveal">
+        <div class="learn-card-num">05</div>
+        <h3 class="learn-card-title">Resultados com humanidade</h3>
+        <p class="learn-card-desc">O método 3-5-4 que integra performance e bem-estar, porque não precisa escolher um ou outro.</p>
+      </div>
+      <div class="learn-card reveal">
+        <div class="learn-card-num">06</div>
+        <h3 class="learn-card-title">Liderança que forma líderes</h3>
+        <p class="learn-card-desc">Como multiplicar sua capacidade formando novos líderes, e sair do ciclo de dependência.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     MÉTODO STRIP
+════════════════════════════════ -->
+<div class="method-strip">
+  <div class="method-strip-inner">
+    <div class="method-label-big">
+      <small>Método exclusivo</small>
+      3-5-4
+    </div>
+    <div class="method-pillars">
+      <div class="mpillar">
+        <div class="mpillar-num">3</div>
+        <div class="mpillar-name">Níveis de liderança</div>
+      </div>
+      <div class="mpillar">
+        <div class="mpillar-num">5</div>
+        <div class="mpillar-name">Pilares do líder</div>
+      </div>
+      <div class="mpillar">
+        <div class="mpillar-num">4</div>
+        <div class="mpillar-name">Forças essenciais</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     PARA QUEM É
+════════════════════════════════ -->
+<section class="forwhom">
+  <div class="forwhom-inner">
+    <div class="forwhom-text reveal">
+      <div class="section-label">Para quem é esta mastermind</div>
+      <h2 class="section-title">Se você lidera pessoas, <br>este evento é <em>seu</em></h2>
+      <p>
+        Não importa se você acabou de assumir sua primeira equipe ou se já lidera times há anos. O que importa é que você quer liderar com mais clareza, mais impacto e mais leveza.
+      </p>
+    </div>
+
+    <div class="forwhom-list reveal">
+      <div class="forwhom-item">
+        <div class="forwhom-check">✓</div>
+        <div class="forwhom-item-text">
+          Supervisores e coordenadores iniciantes
+          <span>Que assumiram a liderança e precisam construir sua base</span>
+        </div>
+      </div>
+      <div class="forwhom-item">
+        <div class="forwhom-check">✓</div>
+        <div class="forwhom-item-text">
+          Especialistas que viraram líderes
+          <span>Que dominam o técnico mas ainda navegam no humano</span>
+        </div>
+      </div>
+      <div class="forwhom-item">
+        <div class="forwhom-check">✓</div>
+        <div class="forwhom-item-text">
+          Gerentes e Heads em crescimento
+          <span>Que querem expandir influência e escalar resultados</span>
+        </div>
+      </div>
+      <div class="forwhom-item">
+        <div class="forwhom-check">✓</div>
+        <div class="forwhom-item-text">
+          Líderes seniores e executivos
+          <span>Que querem construir legado e formar novos líderes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     MENTORAS
+════════════════════════════════ -->
+<section class="mentors">
+  <div class="mentors-inner">
+    <div class="mentors-header reveal">
+      <div class="section-label">Quem vai conduzir a mastermind</div>
+      <h2 class="section-title">Dani & Bia, <em>líderes de líderes</em></h2>
+    </div>
+
+    <div class="mentors-grid">
+      <div class="mentor-card reveal">
+        <div class="mentor-initial">D</div>
+        <div class="mentor-name">Dani</div>
+        <div class="mentor-role">Co-criadora do Método 3-5-4</div>
+        <p class="mentor-bio">
+          Especialista em desenvolvimento humano e liderança, Dani acredita que todo líder tem um potencial inexplorado esperando para ser ativado. Sua abordagem combina profundidade emocional com resultados concretos, transformando não apenas como as pessoas lideram, mas quem elas são como líderes.
+        </p>
+        <div class="mentor-pillars">
+          <span class="pillar-tag">Liderança Emocional</span>
+          <span class="pillar-tag">Desenvolvimento Humano</span>
+          <span class="pillar-tag">Mentalidade</span>
+        </div>
+      </div>
+
+      <div class="mentor-card reveal">
+        <div class="mentor-initial">B</div>
+        <div class="mentor-name">Bia</div>
+        <div class="mentor-role">Co-criadora do Método 3-5-4</div>
+        <p class="mentor-bio">
+          Com foco em estratégia e execução de liderança, Bia traz a dimensão prática que transforma conhecimento em mudança real. Especialista em construção de times, cultura organizacional e formação de sucessores, ela ajuda líderes a saírem do modo operacional e assumirem seu papel estratégico.
+        </p>
+        <div class="mentor-pillars">
+          <span class="pillar-tag">Estratégia de Liderança</span>
+          <span class="pillar-tag">Cultura Organizacional</span>
+          <span class="pillar-tag">Times de Alta Performance</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     FINAL CTA
+════════════════════════════════ -->
+<section class="final-cta" id="inscricao">
+  <div class="final-cta-inner">
+    <div class="section-label">Garanta sua vaga agora</div>
+
+    <h2 class="final-cta-title">
+      Liderar bem não é talento.<br>
+      É um <em>método que se aprende.</em>
+    </h2>
+
+    <p class="final-cta-sub">
+      Esta mastermind é gratuita, única e ao vivo. Dani e Bia vão abrir o método que desenvolveram ao longo de anos ajudando líderes a transformar suas equipes, e vidas. Você só precisa aparecer.
+    </p>
+
+    <a href="https://forms.gle/QYrWNRUVFvGpa71p6" target="_blank" rel="noopener" class="cta-btn">
+      <span>Garantir minha vaga gratuita</span>
+      <span class="arrow">→</span>
+    </a>
+
+    <p class="cta-note">Gratuito · Online · Ao vivo · Vagas limitadas</p>
+
+    <div class="social-proof">
+      <div class="proof-item">
+        <div class="proof-num">100%</div>
+        <div class="proof-label">Gratuita</div>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-item">
+        <div class="proof-num">1</div>
+        <div class="proof-label">Live exclusiva</div>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-item">
+        <div class="proof-num">3-5-4</div>
+        <div class="proof-label">Método exclusivo</div>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-item">
+        <div class="proof-num">2</div>
+        <div class="proof-label">Especialistas ao vivo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     FOOTER
+════════════════════════════════ -->
+<footer>
+  <p>© 2026 Dani & Bia · Liderar Humanos de Maneira Humana · Todos os direitos reservados</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>
