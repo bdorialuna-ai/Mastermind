@@ -43,7 +43,7 @@
 
   /* ── HERO ── */
   .hero {
-    min-height: 100vh;
+    min-height: 85vh;
     display: grid;
     grid-template-columns: 1fr 1fr;
     position: relative;
@@ -52,7 +52,7 @@
 
   .hero-left {
     background: var(--dark);
-    padding: 80px 60px 80px 80px;
+    padding: 60px 60px 30px 80px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -199,6 +199,15 @@
     margin-bottom: 40px;
     max-width: 460px;
     animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .hero-date-badge {
+    margin-top: 16px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
   }
 
   .hero-subtitle strong {
@@ -972,6 +981,146 @@
     .method-strip-inner { grid-template-columns: 1fr; gap: 30px; }
     footer { padding: 30px 32px; }
   }
+
+  /* ── FORM TOP SECTION ── */
+  .form-top-section {
+    background: var(--dark);
+    padding: 0 80px 50px;
+  }
+
+  .form-top-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+  }
+
+  .form-top-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .form-top-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+
+  .form-top-sub {
+    font-size: 0.92rem;
+    font-weight: 300;
+    color: rgba(245, 240, 232, 0.5);
+  }
+
+  .signup-form-top {
+    margin: 0;
+    max-width: 100%;
+  }
+
+  @media (max-width: 900px) {
+    .form-top-inner { grid-template-columns: 1fr; gap: 36px; }
+    .form-top-section { padding: 60px 32px; }
+  }
+
+  
+  .signup-form {
+    margin: 40px auto 0;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .signup-form input {
+    width: 100%;
+    padding: 16px 20px;
+    background: rgba(245, 240, 232, 0.07);
+    border: 1px solid rgba(245, 240, 232, 0.15);
+    border-radius: 3px;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .signup-form input::placeholder {
+    color: rgba(245, 240, 232, 0.35);
+  }
+
+  .signup-form input:focus {
+    border-color: var(--gold);
+    background: rgba(245, 240, 232, 0.1);
+  }
+
+  .signup-form .form-submit {
+    width: 100%;
+    padding: 18px 32px;
+    background: var(--gold);
+    border: none;
+    border-radius: 3px;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    margin-top: 4px;
+  }
+
+  .signup-form .form-submit:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+  }
+
+  .signup-form .form-submit:active {
+    transform: translateY(0);
+  }
+
+  .form-note {
+    font-size: 0.72rem;
+    color: rgba(245, 240, 232, 0.3);
+    text-align: center;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 32px;
+    background: rgba(56, 109, 123, 0.15);
+    border: 1px solid rgba(56, 109, 123, 0.3);
+    border-radius: 3px;
+    color: var(--cream);
+  }
+
+  .form-success h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .form-success p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: rgba(245, 240, 232, 0.7);
+    line-height: 1.7;
+  }
+
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -1011,14 +1160,7 @@ src="https://www.facebook.com/tr?id=4334263136808946&ev=PageView&noscript=1"
     <p class="hero-subtitle">
       Nesta live exclusiva, vamos revelar o que realmente transforma líderes comuns em líderes que <strong>geram resultado sem abrir mão das pessoas.</strong>
     </p>
-
-    <a href="https://app.mailingboss.com/lists/69cf345c12121/subscribe" target="_blank" rel="noopener" class="cta-btn">
-      <span>Garantir minha vaga gratuita</span>
-      <span class="arrow">→</span>
-    </a>
-
-    <p class="cta-note">50 vagas · 100% gratuita · online</p>
-  </div>
+    <p class="hero-date-badge">29 de abril &nbsp;·&nbsp; Online &nbsp;·&nbsp; Gratuita</p>
 
   <div class="hero-right">
     <div class="hero-ornament"></div>
@@ -1031,7 +1173,28 @@ src="https://www.facebook.com/tr?id=4334263136808946&ev=PageView&noscript=1"
   </div>
 </section>
 
-
+<!-- ═══════════════════════════════
+     FORM TOP
+════════════════════════════════ -->
+<section class="form-top-section">
+  <div class="form-top-inner">
+    <div class="form-top-text reveal">
+      <h2 class="form-top-title">Garanta sua vaga agora</h2>
+    </div>
+    <form class="signup-form signup-form-top reveal" id="signupFormTop" novalidate>
+      <input type="text" name="name" id="fname2" placeholder="Seu nome completo" required autocomplete="name" />
+      <input type="email" name="email" id="femail2" placeholder="Seu melhor e-mail" required autocomplete="email" />
+      <input type="tel" name="phone" id="fphone2" placeholder="DDD + WhatsApp (ex: 11 99999-9999)" required autocomplete="tel" />
+      <button type="submit" class="form-submit">Garantir minha vaga gratuita →</button>
+    </form>
+    <div class="form-success" id="formSuccess2" style="display:none;">
+      <h3>Vaga confirmada! 🎉</h3>
+      <p>Você é uma das 50 pessoas selecionadas para essa mastermind.<br><br>
+      Em breve você receberá o link de acesso. Salva a data: <strong>29 de abril</strong>, e fique de olho no seu e-mail.<br><br>
+      Nos vemos lá, Dani &amp; Bia</p>
+    </div>
+  </div>
+</section>
 
 <!-- ═══════════════════════════════
      DOR
@@ -1272,30 +1435,27 @@ src="https://www.facebook.com/tr?id=4334263136808946&ev=PageView&noscript=1"
       Esta mastermind é gratuita, única e ao vivo. Dani e Bia vão abrir o método que desenvolveram ao longo de anos ajudando líderes a transformar suas equipes, e vidas. Você só precisa aparecer.
     </p>
 
-    <a href="https://app.mailingboss.com/lists/69cf345c12121/subscribe" target="_blank" rel="noopener" class="cta-btn">
-      <span>Garantir minha vaga gratuita</span>
-      <span class="arrow">→</span>
-    </a>
+    <form class="signup-form" id="signupForm" novalidate>
+      <input type="text" name="name" id="fname" placeholder="Seu nome completo" required autocomplete="name" />
+      <input type="email" name="email" id="femail" placeholder="Seu melhor e-mail" required autocomplete="email" />
+      <input type="tel" name="phone" id="fphone" placeholder="DDD + WhatsApp (ex: 11 99999-9999)" required autocomplete="tel" />
+      <button type="submit" class="form-submit">Garantir minha vaga gratuita →</button>
+    </form>
 
-    <p class="cta-note">Gratuito · Online · Ao vivo · Vagas limitadas</p>
+    <div class="form-success" id="formSuccess">
+      <h3>Vaga confirmada! 🎉</h3>
+      <p>Você é uma das 50 pessoas selecionadas para essa mastermind.<br><br>
+      Em breve você receberá o link de acesso. Enquanto isso, salva a data: <strong>29 de abril</strong>, e mais perto do dia, fique de olho no seu e-mail.<br><br>
+      Nos vemos lá, Dani &amp; Bia</p>
+    </div>
 
     <div class="social-proof">
-      <div class="proof-item">
-        <div class="proof-num">100%</div>
-        <div class="proof-label">Gratuita</div>
-      </div>
-      <div class="proof-divider"></div>
       <div class="proof-item">
         <div class="proof-num">45</div>
         <div class="proof-label">Minutos de masterclass</div>
       </div>
       <div class="proof-divider"></div>
-      <div class="proof-item">
-        <div class="proof-num">1</div>
-        <div class="proof-label">Live exclusiva e gratuita</div>
-      </div>
-      <div class="proof-divider"></div>
-      <div class="proof-item">
+<div class="proof-item">
         <div class="proof-num">2</div>
         <div class="proof-label">Especialistas ao vivo</div>
       </div>
@@ -1401,6 +1561,64 @@ src="https://www.facebook.com/tr?id=4334263136808946&ev=PageView&noscript=1"
 
   window.addEventListener('resize', resize);
   resize();
+})();
+</script>
+
+<script>
+(function() {
+
+  function submitForm(formId, fname, femail, fphone) {
+    var form = document.getElementById(formId);
+    if (!form) return;
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var btn = form.querySelector('.form-submit');
+      var name = document.getElementById(fname).value.trim();
+      var email = document.getElementById(femail).value.trim();
+      var phone = document.getElementById(fphone).value.trim();
+      if (!name || !email || !phone) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+      }
+      btn.textContent = 'Enviando...';
+      btn.disabled = true;
+
+      // Send via hidden iframe (bypasses CORS)
+      var iframeName = 'hidden_iframe_' + formId;
+      var iframe = document.createElement('iframe');
+      iframe.name = iframeName;
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+
+      var hiddenForm = document.createElement('form');
+      hiddenForm.method = 'POST';
+      hiddenForm.action = 'https://app.mailingboss.com/lists/69cf345c12121/subscribe';
+      hiddenForm.target = iframeName;
+      hiddenForm.style.display = 'none';
+
+      var fields = {'fields[name]': name, 'fields[email]': email, 'fields[phone]': phone, 'ml-submit': '1', 'anticsrf': 'true'};
+      for (var key in fields) {
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = fields[key];
+        hiddenForm.appendChild(input);
+      }
+      document.body.appendChild(hiddenForm);
+      hiddenForm.submit();
+
+      if (typeof fbq !== 'undefined') fbq('track', 'Lead');
+
+      // Redirect after short delay
+      setTimeout(function() {
+        window.location.href = 'https://fanciful-truffle-4f450a.netlify.app/';
+      }, 800);
+    });
+  }
+
+  submitForm('signupForm', 'fname', 'femail', 'fphone');
+  submitForm('signupFormTop', 'fname2', 'femail2', 'fphone2');
+
 })();
 </script>
 </body>
