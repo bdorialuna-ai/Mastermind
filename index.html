@@ -420,20 +420,14 @@ footer{background:#0F0D0A;padding:40px 80px;text-align:center;font-size:0.78rem;
       Esta mastermind é gratuita, única e ao vivo. Vamos abrir o que desenvolvemos ao longo de anos ajudando líderes a transformar suas equipes e vidas. Você só precisa aparecer.
     </p>
 
-    <form class="signup-form" id="signupForm" novalidate>
-      <input type="text" id="fname" placeholder="Seu nome completo" required autocomplete="name" />
-      <input type="email" id="femail" placeholder="Seu melhor e-mail" required autocomplete="email" />
-      <input type="tel" id="fphone" placeholder="DDD + WhatsApp (ex: 11 99999-9999)" required autocomplete="tel" />
+    <form class="signup-form" action="https://app.mailingboss.com/lists/69cf345c12121/subscribe" method="post">
+      <input type="text" name="FNAME" placeholder="Seu nome completo" autocomplete="name" />
+      <input type="email" name="EMAIL" placeholder="Seu melhor e-mail" required autocomplete="email" />
+      <input type="text" name="PHONE" placeholder="DDD + WhatsApp (ex: 11 99999-9999)" autocomplete="tel" />
+      <input type="hidden" name="redirect" value="https://fanciful-truffle-4f450a.netlify.app/" />
       <button type="submit" class="form-submit">Garantir minha vaga gratuita →</button>
       <p class="form-note">50 vagas · 100% gratuita · online</p>
     </form>
-
-    <div class="form-success" id="formSuccess">
-      <h3>Vaga confirmada! 🎉</h3>
-      <p>Você é uma das 50 pessoas selecionadas para essa mastermind.<br><br>
-      Em breve você receberá o link de acesso. Enquanto isso, salva a data: <strong>29 de abril</strong>, e mais perto do dia, fique de olho no seu e-mail.<br><br>
-      Nos vemos lá, Dani &amp; Bia</p>
-    </div>
 
     <div class="social-proof">
       <div class="proof-item"><div class="proof-num">100%</div><div class="proof-label">Gratuita</div></div>
